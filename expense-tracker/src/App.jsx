@@ -2,16 +2,21 @@ import { useEffect, useState } from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { FaTrash, FaEdit, FaWindowClose } from "react-icons/fa";
 import { publicRequest } from "./requestMethods";
+
 function App() {
   const [addExpense, setAddExpense] = useState(false);
   const [showChats, setShowChats] = useState(false);
   const [update, setUpdate] = useState(false);
   const [expenses, setExpenses] = useState([]);
-  const [showDelete, setShowDelete] = useState(false);
   const [label, setLabel] = useState("");
   const [amount, setValue] = useState(0);
   const [date, setDate] = useState("");
-  const [id, setID] = useState(null);
+  const [updatedId, setUpdatedID] = useState(null);
+  const [updatedLabel, setUpdatedLabel] = useState("");
+  const [updatedAmount, setUpdatedAmount] = useState("");
+  const [updatedDate, setUpdatedDate] = useState("");
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleAddExpense = () => {
     setAddExpense(!addExpense);
@@ -20,13 +25,12 @@ function App() {
   const handleShowChart = () => {
     setShowChats(!showChats);
   };
-  const handleUpdate = () => {
+
+  const handleUpdate = (id) => {
+    setUpdatedID(id);
     setUpdate(!update);
   };
-  const handleShowDelete = (Id) => {
-    setShowDelete(!showDelete);
-    setID(Id);
-  };
+
   const handleExpense = async () => {
     try {
       await publicRequest.post("/expenses", {
@@ -36,17 +40,6 @@ function App() {
       });
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (id) {
-      try {
-        await publicRequest.delete(`/expenses/${id}`);
-        window.location.reload();
-      } catch (error) {
-        console.log(error);
-      }
     }
   };
 
@@ -62,6 +55,36 @@ function App() {
 
     getExpenses();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await publicRequest.delete(`/expenses/${id}`);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateExpense = async () => {
+    if (updatedId) {
+      try {
+        await publicRequest.put(`/expenses/${updatedId}`, {
+          value: updatedAmount,
+          label: updatedLabel,
+          date: updatedDate,
+        });
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const filteredExpenses = expenses.filter((expense) =>
+    expense.label.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalSum = filteredExpenses.reduce((acc, curr) => acc + curr.value, 0);
 
   return (
     <div>
@@ -155,19 +178,24 @@ function App() {
                     },
                   ]}
                 />
+                <div>
+                  <strong>Total Expenses:</strong> ${totalSum}
+                </div>
               </div>
             )}
           </div>
           <div className="flex">
             <input
               type="text"
-              placeholder="search"
+              placeholder="Search"
               className="p-[10px] w-[150px] border-2 border-[#444] border-solid"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
         <div className="flex flex-col">
-          {expenses?.map((expense, index) => (
+          {filteredExpenses.map((expense, index) => (
             <>
               <div
                 className="relative flex justify-between items-center w-[80vw] h-[100px] bg-[#f3edeb] my-[20px] py-[10px]"
@@ -184,80 +212,60 @@ function App() {
                 <div>
                   <FaTrash
                     className="text-red-500 mr-[10px] cursor-pointer"
-                    onClick={() => handleShowDelete(expense._id)}
+                    onClick={() => handleDelete(expense._id)}
                   />
                   <FaEdit
                     className="text-[#555] my-[10px] cursor-pointer"
-                    onClick={handleUpdate}
+                    onClick={() => handleUpdate(expense._id)}
                   />
                 </div>
-                {showDelete && (
-                  <div className="absolute z-[999] top-0 right-0 bg-white flex p-[10px] h-[300px] w-[300px] shadow-xl">
-                    <div className="flex justify-center items-center">
-                      <button
-                        className="mr-10 bg-[#aaa] p-[10px] w-[100px] cursor-pointer font-medium"
-                        onClick={handleShowDelete}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className="bg-[#e43737] text-white border-none p-[10px] w-[100px] cursor-pointer font-medium"
-                        onClick={handleDelete}
-                      >
-                        Confirm
-                      </button>
-                    </div>
-                  </div>
-                )}
-                {update && (
-                  <div className="absolute z-[999] flex flex-col p-[10px] top-[20px] right-0 h-[500px] w-[500px] bg-white shadow-xl">
-                    <FaWindowClose
-                      className="flex justify-end items-end text-2xl text-red-500 cursor-pointer"
-                      onClick={handleUpdate}
-                    />
-                    <label
-                      htmlFor=""
-                      className="mt-[10px]font-semibold text-[18px]"
-                    >
-                      Expense Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Birthday"
-                      className="border-[#444]  p-[10px] outline-none"
-                    />
-                    <label
-                      htmlFor=""
-                      className="mt-[10px] font-semibold text-[18px]"
-                    >
-                      Expense Amount
-                    </label>
-                    <input
-                      type="Number"
-                      placeholder="300"
-                      className="p-[10px] outline-none"
-                    />
-                    <label
-                      htmlFor=""
-                      className="mt-[10px] font-semibold text-[18px]"
-                    >
-                      Expense Date
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="20/11/2024"
-                      className="p-[10px] outline-none"
-                    />
-
-                    <button className="bg-[#af8978] text-white p-[10px] border-none cursor-pointer my-10">
-                      Update Expense
-                    </button>
-                  </div>
-                )}
               </div>
             </>
           ))}
         </div>
+
+        {update && (
+          <div className="absolute z-[999] flex flex-col p-[10px] top-[25%] right-0 h-[500px] w-[500px] bg-white shadow-xl">
+            <FaWindowClose
+              className="flex justify-end items-end text-2xl text-red-500 cursor-pointer"
+              onClick={handleUpdate}
+            />
+            <label htmlFor="" className="mt-[10px]font-semibold text-[18px]">
+              Expense Name
+            </label>
+            <input
+              type="text"
+              placeholder="Birthday"
+              className="border-[#444]  p-[10px] outline-none"
+              onChange={(e) => setUpdatedLabel(e.target.value)}
+            />
+            <label htmlFor="" className="mt-[10px] font-semibold text-[18px]">
+              Expense Amount
+            </label>
+            <input
+              type="Number"
+              placeholder="300"
+              className="p-[10px] outline-none"
+              onChange={(e) => setUpdatedAmount(e.target.value)}
+            />
+            <label htmlFor="" className="mt-[10px] font-semibold text-[18px]">
+              Expense Date
+            </label>
+            <input
+              type="text"
+              placeholder="20/11/2024"
+              className="p-[10px] outline-none"
+              onChange={(e) => setUpdatedDate(e.target.value)}
+            />
+
+            <button
+              className="bg-[#af8978] text-white p-[10px] border-none cursor-pointer my-10"
+              onClick={updateExpense}
+            >
+              Update Expense
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
