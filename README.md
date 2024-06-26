@@ -6,15 +6,22 @@ Additionally, it features background services that send an email notification to
 providing a timely warning to help you stay within your financial limits.
 
 ## Features
-**Add Expenses**: Easily add your daily expenses to the tracker.
-**View Expenses as Pie Chart**: Visualize your expenses in a pie chart to understand your spending habits better.
-**Background Services**: Receive email notifications if you exceed your monthly budget, ensuring you stay informed about your spending.
-**MERN Stack**: Built with MongoDB, Express, React, and Node.js for a seamless and efficient user experience.
+**Add Expenses**:
+ - Easily add your daily expenses to the tracker.
+**View Expenses as Pie Chart**: 
+- Visualize your expenses in a pie chart to understand your spending habits better.
+**Background Services**: 
+- Receive email notifications if you exceed your monthly budget, ensuring you stay informed about your spending.
+**MERN Stack**: 
+- Built with MongoDB, Express, React, and Node.js for a seamless and efficient user experience.
 
 ## Technologies Used
-**Frontend**: React
-**Backend**: Node.js, Express
-Database: MongoDB
+**Frontend**: 
+ - React
+**Backend**: 
+- Node.js, Express
+**Database**: 
+- MongoDB
 
 ### Install Dependencies
 
