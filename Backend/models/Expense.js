@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const ExpenseSchema = mongoose.Schema({
     label:{type:String, require:true},
     value:{type:Number, required:true},
