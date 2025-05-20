@@ -809,3 +809,128 @@ a {
   padding: 24px;
   text-align: center;
 }
+
+create a web page in react and a separate css for the page in which we have a heading of Add New and an icon before it which will redirect us to home page. the screen is divided into two parts: 2/3 of the screen has the functionality to capture the photo of a top wear (shirt pant etc) . there should an icon of camera ,clicking on which we can open the camera to capture. The rest 1/3 of the screen contains photo captured on the right side and at the bottom of which there is option to cancel or save the photos to the inventory . upon saving the item will go to the inventory page where the page has heading inventory and the icon before it to take us to home page. Inventory page has three parts top wear , lower and footwear . whatever was captured in the add new page will be rendered to the inventory page in the respective column of shirt pant or shoes. the home page contains the heading smart closet at the top and the screen divided into three equal sections .the leftmost section has the inventory image upon which inventory is written. It will take us to the unventory page. then in the middle, it is divide into two parts: at the above we have add new page written over an image and below we haave find a match option written over an image clicking on which we will be directed to the respective pages. at the rightmost section we have the selected picks of the day with three section top middle and bottom . this will be given in ui dynamically so that there is minimal work in integration. create the webpages and use react vite app use react routers and give the project
+
+Edit
+I'll create a React application for a Smart Closet system with the pages you've described. I'll use React Router for navigation, create separate CSS files, and implement the camera functionality for capturing clothing items.
+
+Let's start by creating the application structure and implementing the core features:
+
+
+Smart Closet App Structure
+Code 
+Now, let's create the CSS files for styling each component:
+
+
+Smart Closet CSS Files
+Code 
+Now, let's create the main React project setup files to complete the application:
+
+
+Smart Closet Project Setup Files
+Code 
+Let's create a simple interactive demonstration of the Smart Closet app:
+
+
+Drafting artifact...
+ 
+
+
+
+Continue
+
+Edit
+I'll continue creating the interactive demonstration of the Smart Closet app:
+
+
+Smart Closet Interactive Demo
+Interactive artifact 
+I've created a complete Smart Closet web application using React with the following features:
+
+Project Structure
+The application is built using React and Vite, and contains these main pages:
+
+Home Page - The main dashboard with three sections:
+Left section: Inventory access
+Middle section: "Add New" and "Find a Match" options
+Right section: Selected picks of the day
+Add New Page - For capturing new clothing items:
+2/3 of the screen dedicated to camera functionality
+1/3 of the screen showing the preview and options
+Options to select item type (topwear, lowerwear, footwear)
+Save/Cancel buttons
+Inventory Page - To view all clothing items:
+Items organized by category (topwear, lowerwear, footwear)
+Grid layout for easy browsing
+Back button to return to home
+Find a Match Page - Placeholder for outfit matching functionality
+Key Implementation Details
+Camera Functionality
+Uses the browser's Web Camera API
+Captures photos and displays them for review
+Can cancel or save the captured image
+Navigation
+Implements React Router for seamless page transitions
+Each page has a back button to return to the home page
+Clean, intuitive interface
+Data Storage
+Uses localStorage to persist the inventory data
+Organizes items by category for easy retrieval
+Responsive Design
+Works on mobile and desktop browsers
+Adjusts layout based on screen size
+Interactive Demo
+I've also included an interactive demo component that shows how the app works without requiring camera access. This demonstrates the user flow and UI interactions.
+
+How to Run the Project
+Install dependencies:
+npm install
+Start the development server:
+npm run dev
+Access the application in your browser (typically at http://localhost:5173)
+The application is designed to be user-friendly and intuitive, with a clean visual design that focuses on functionality. The camera implementation follows best practices for web applications, requesting permissions and handling the camera stream appropriately.
+
+Would you like me to explain any specific part of the implementation in more detail?
+
+
+
+
+
+
+
+
+// main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
+
+// index.css
+:root {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  
+  color-scheme: light dark;
+  color: #213547;
+  background-color: #f5f5f5;
+  
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
